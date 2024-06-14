@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:rui/user/mini_login_status_widget.dart';
 
@@ -28,10 +29,11 @@ class _RuiLayoutState extends State<RuiLayoutAdmin> {
   bool _isLeftNavPanelOpen = false;
 
   static const double TOP_HEIGHT = 50;
-  static const double BOTTOM_HEIGHT = 50;
+  static const double BOTTOM_HEIGHT = 32;
 
   static const double LEFT_WIDTH = 200;
   static const double LEFT_WIDTH_CLOSE = 48;
+  static const double LEFT_TOPBAR_HEIGHT = 48;
 
   static const double RIGHT_WIDTH = 200;
   static const double RIGHT_MENU_BTN_WIDTH = 32;
@@ -41,25 +43,25 @@ class _RuiLayoutState extends State<RuiLayoutAdmin> {
     return SizedBox(
       width: MediaQuery.of(context).size.width,
       height: MediaQuery.of(context).size.height,
-      child: Column(
+      child: Row(
         children: [
-          _buildHeader(),
+          _buildLeftNavPanel(),
           Expanded(
-            child: Row(
+            child: Column(
               children: [
-                if (widget.leftNavPanel != null) _buildLeftNavPanel(),
+                _buildHeader(),
                 Expanded(
-                  child: Column(
+                  child: Row(
                     children: [
                       _buildBody(),
+                      if (widget.rightPanel != null) _buildRightPanel(),
                     ],
                   ),
                 ),
-                if (widget.rightPanel != null) _buildRightPanel(),
+                if (widget.footer != null) _buildFooter(),
               ],
             ),
           ),
-          if (widget.footer != null) _buildFooter(),
         ],
       ),
     );
@@ -89,13 +91,37 @@ class _RuiLayoutState extends State<RuiLayoutAdmin> {
   }
 
   Widget _buildLeftNavPanel() {
-    return Container(
+    return SizedBox(
       width: _isLeftNavPanelOpen ? LEFT_WIDTH : LEFT_WIDTH_CLOSE,
-      height: MediaQuery.of(context).size.height - TOP_HEIGHT - BOTTOM_HEIGHT,
-      color: _isLeftNavPanelOpen ? Colors.brown : Colors.blue,
-      child: SizedBox(
+      height: MediaQuery.of(context).size.height,
+      child: Container(
         // width: _isLeftNavPanelOpen ? LEFT_WIDTH : LEFT_WIDTH_CLOSE,
-        child: widget.leftNavPanel,
+        // height: MediaQuery.of(context).size.height - TOP_HEIGHT - BOTTOM_HEIGHT,
+        color: _isLeftNavPanelOpen ? Colors.brown : Colors.purple,
+        // child: Expanded(
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              _buildLeftTop(),
+              widget.leftNavPanel!,
+            ],
+          ),
+        ),
+        // ),
+      ),
+    );
+  }
+
+  Widget _buildLeftTop() {
+    return SizedBox(
+      height: LEFT_TOPBAR_HEIGHT,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        // crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Icon(Icons.apple),
+          if (_isLeftNavPanelOpen) Text("APP "),
+        ],
       ),
     );
   }
