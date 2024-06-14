@@ -29,7 +29,10 @@ class _RuiLayoutState extends State<RuiLayoutAdmin> {
 
   static const double TOP_HEIGHT = 50;
   static const double BOTTOM_HEIGHT = 50;
+
   static const double LEFT_WIDTH = 200;
+  static const double LEFT_WIDTH_CLOSE = 48;
+
   static const double RIGHT_WIDTH = 200;
   static const double RIGHT_MENU_BTN_WIDTH = 32;
 
@@ -87,11 +90,11 @@ class _RuiLayoutState extends State<RuiLayoutAdmin> {
 
   Widget _buildLeftNavPanel() {
     return Container(
-      width: _isLeftNavPanelOpen ? LEFT_WIDTH : 10,
+      width: _isLeftNavPanelOpen ? LEFT_WIDTH : LEFT_WIDTH_CLOSE,
       height: MediaQuery.of(context).size.height - TOP_HEIGHT - BOTTOM_HEIGHT,
       color: _isLeftNavPanelOpen ? Colors.brown : Colors.blue,
       child: SizedBox(
-        width: _isLeftNavPanelOpen ? LEFT_WIDTH : 10,
+        // width: _isLeftNavPanelOpen ? LEFT_WIDTH : LEFT_WIDTH_CLOSE,
         child: widget.leftNavPanel,
       ),
     );
@@ -107,7 +110,7 @@ class _RuiLayoutState extends State<RuiLayoutAdmin> {
 
   Widget _buildRightMenuPanel() {
     return Container(
-      width: RIGHT_MENU_BTN_WIDTH,
+      // width: RIGHT_MENU_BTN_WIDTH,
       color: Colors.blue,
       child: Row(
         children: [
@@ -125,7 +128,7 @@ class _RuiLayoutState extends State<RuiLayoutAdmin> {
     return GestureDetector(
         onTap: controller.open,
         child: ColoredBox(
-          color: Colors.blue,
+          color: Colors.amber,
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8),
             child: Icon(Icons.menu),

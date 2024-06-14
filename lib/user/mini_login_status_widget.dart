@@ -13,7 +13,9 @@ class _MiniLoginStatusWidgetState extends State<MiniLoginStatusWidget> {
     return const Row(
       children: [
         CircleAvatar(),
+        SizedBox(width: 10),
         Text("User"),
+        SizedBox(width: 10),
       ],
     );
   }
