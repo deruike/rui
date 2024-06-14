@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:rui/delphi_layout/delphi_container.dart';
 import 'package:rui/delphi_layout/delphi_layout.dart';
+import 'package:rui/layout/rui_layout.dart';
 
 class MyApp extends StatelessWidget {
   @override
@@ -33,58 +34,65 @@ class MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: const Text("Rui"),
       ),
-      body: LayoutBuilder(
-        builder: (context, constraints) {
-          return SizedBox(
-            width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height,
-            child: DelphiLayout(
-              left: 0,
-              top: 0,
-              width: 640,
-              height: 480,
-              children: [
-                DelphiContainer(
-                  anchorLeft: true,
-                  anchorTop: true,
-                  anchorRight: true,
-                  height: 50,
-                  children: [
-                    DelphiContainer(children: const [
-                      Text("APP Title"),
-                    ]),
-                  ],
-                ),
-                DelphiContainer(
-                  anchorLeft: true,
-                  anchorTop: true,
-                  anchorBottom: true,
-                  width: 120,
-                  children: [
-                    DelphiContainer(children: const [
-                      Text("left"),
-                    ]),
-                  ],
-                ),
-                DelphiContainer(
-                  anchorLeft: true,
-                  anchorTop: true,
-                  anchorRight: true,
-                  anchorBottom: true,
-                  left: 125,
-                  top: 55,
-                  children: [
-                    DelphiContainer(children: const [
-                      Text("main"),
-                    ]),
-                  ],
-                ),
-              ],
-            ),
-          );
-        },
+      body: RuiLayout(
+        body: _buildBody(),
+        header: _buildHeader(),
+        footer: _buildFooter(),
+        leftNavPanel: _buildLeftNavPanel(),
+        rightMenuButtons: _buildRightMenuBottons(),
       ),
     );
+  }
+
+  Widget _buildHeader() {
+    return Container(
+      color: Colors.blue,
+      child: Text("Header"),
+    );
+  }
+
+  Widget _buildBody() {
+    return Container(
+      color: Colors.red,
+      child: Text("Body"),
+    );
+  }
+
+  Widget _buildFooter() {
+    return Container(
+      color: Colors.green,
+      child: Text("Footer"),
+    );
+  }
+
+  Widget _buildLeftNavPanel() {
+    return Container(
+      color: Colors.yellow,
+      child: Text("LeftNavPanel"),
+    );
+  }
+
+  List<MenuItemButton> _buildRightMenuBottons() {
+    return [
+      MenuItemButton(
+        child: Text('打开'),
+        onPressed: () {
+          print("======打开==========");
+        },
+      ),
+      MenuItemButton(
+        child: Text('print'),
+        onPressed: () {
+          print("======print==========");
+        },
+      ),
+      MenuItemButton(
+        child: Text('Exit'),
+        onPressed: () {
+          print("======exit==========");
+        },
+      ),
+    ];
   }
 }
 
