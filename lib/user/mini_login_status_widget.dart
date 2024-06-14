@@ -10,11 +10,11 @@ class MiniLoginStatusWidget extends StatefulWidget {
 class _MiniLoginStatusWidgetState extends State<MiniLoginStatusWidget> {
   @override
   Widget build(BuildContext context) {
-    return const Center(
-      child: Text(
-        'MiniLoginStatusWidget is working',
-        style: TextStyle(fontSize: 20),
-      ),
+    return const Row(
+      children: [
+        CircleAvatar(),
+        Text("User"),
+      ],
     );
   }
 }

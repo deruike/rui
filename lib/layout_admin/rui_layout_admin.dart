@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:rui/user/mini_login_status_widget.dart';
 
-class RuiLayout extends StatefulWidget {
+class RuiLayoutAdmin extends StatefulWidget {
   final Widget body;
   final Widget? footer;
   final Widget? header;
@@ -9,7 +9,7 @@ class RuiLayout extends StatefulWidget {
   final Widget? rightPanel;
   final List<MenuItemButton>? rightMenuButtons;
 
-  const RuiLayout({
+  const RuiLayoutAdmin({
     super.key,
     required this.body,
     this.footer,
@@ -20,10 +20,10 @@ class RuiLayout extends StatefulWidget {
   });
 
   @override
-  State<RuiLayout> createState() => _RuiLayoutState();
+  State<RuiLayoutAdmin> createState() => _RuiLayoutState();
 }
 
-class _RuiLayoutState extends State<RuiLayout> {
+class _RuiLayoutState extends State<RuiLayoutAdmin> {
   bool _isRightPanelOpen = false;
   bool _isLeftNavPanelOpen = false;
 
@@ -31,6 +31,7 @@ class _RuiLayoutState extends State<RuiLayout> {
   static const double BOTTOM_HEIGHT = 50;
   static const double LEFT_WIDTH = 200;
   static const double RIGHT_WIDTH = 200;
+  static const double RIGHT_MENU_BTN_WIDTH = 32;
 
   @override
   Widget build(BuildContext context) {
@@ -86,10 +87,13 @@ class _RuiLayoutState extends State<RuiLayout> {
 
   Widget _buildLeftNavPanel() {
     return Container(
-      width: LEFT_WIDTH,
+      width: _isLeftNavPanelOpen ? LEFT_WIDTH : 10,
       height: MediaQuery.of(context).size.height - TOP_HEIGHT - BOTTOM_HEIGHT,
-      color: Colors.blue,
-      child: _isLeftNavPanelOpen ? widget.leftNavPanel : SizedBox(width: 10),
+      color: _isLeftNavPanelOpen ? Colors.brown : Colors.blue,
+      child: SizedBox(
+        width: _isLeftNavPanelOpen ? LEFT_WIDTH : 10,
+        child: widget.leftNavPanel,
+      ),
     );
   }
 
@@ -103,7 +107,7 @@ class _RuiLayoutState extends State<RuiLayout> {
 
   Widget _buildRightMenuPanel() {
     return Container(
-      width: RIGHT_WIDTH,
+      width: RIGHT_MENU_BTN_WIDTH,
       color: Colors.blue,
       child: Row(
         children: [

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:rui/delphi_layout/delphi_container.dart';
 import 'package:rui/delphi_layout/delphi_layout.dart';
-import 'package:rui/layout/rui_layout.dart';
+import 'package:rui/layout_admin/rui_layout_admin.dart';
 
 class MyApp extends StatelessWidget {
   @override
@@ -34,7 +34,7 @@ class MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: const Text("Rui"),
       ),
-      body: RuiLayout(
+      body: RuiLayoutAdmin(
         body: _buildBody(),
         header: _buildHeader(),
         footer: _buildFooter(),
