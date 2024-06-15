@@ -1,3 +1,12 @@
 ## 0.0.1
 
-* TODO: Describe initial release.
+* RUI是一个flutter 界面框架。提供界面的快速开发。主要有以下功能：
+
+1. admin 布局，包括顶部导航栏，左侧菜单栏，右侧内容区域，底部状态栏
+2. 登录
+3. 菜单
+
+* 作者
+   
+    Dereking
+
