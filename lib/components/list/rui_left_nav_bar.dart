@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 
-class LeftNavBar extends StatefulWidget {
+class RuiLeftNavBar extends StatefulWidget {
   List<Widget> menuItems;
   bool isOpen = true;
 
-  LeftNavBar({super.key, required this.isOpen, required this.menuItems});
+  RuiLeftNavBar({super.key, required this.isOpen, required this.menuItems});
 
   @override
-  State<LeftNavBar> createState() => _LeftNavBarState();
+  State<RuiLeftNavBar> createState() => _RuiLeftNavBarState();
 
   //切换展开
 }
 
-class _LeftNavBarState extends State<LeftNavBar> {
+class _RuiLeftNavBarState extends State<RuiLeftNavBar> {
   @override
   Widget build(BuildContext context) {
     return ListView(

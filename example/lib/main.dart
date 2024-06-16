@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:rui/components/list/rui_left_nav_bar.dart';
+import 'package:rui/components/panels/head_tools_bar.dart';
+import 'package:rui/components/panels/rui_logo_panel.dart';
+import 'package:rui/components/user/rui_login_status_panel.dart';
 
 import 'package:rui/index.dart';
 
@@ -19,33 +23,21 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // TRY THIS: Try running your application with "flutter run". You'll see
-        // the application has a purple toolbar. Then, without quitting the app,
-        // try changing the seedColor in the colorScheme below to Colors.green
-        // and then invoke "hot reload" (save your changes or press the "hot
-        // reload" button in a Flutter-supported IDE, or press "r" if you used
-        // the command line to start the app).
-        //
-        // Notice that the counter didn't reset back to zero; the application
-        // state is not lost during the reload. To reset the state, use hot
-        // restart instead.
-        //
-        // This works for code too, not just values: Most code changes can be
-        // tested with just a hot reload.
         colorScheme: ColorScheme.fromSeed(
             seedColor: Colors.greenAccent, brightness: brightness),
         useMaterial3: true,
-        // brightness: Brightness.dark,
+        fontFamily: "PingFang",
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
+  TextStyle textStyle =
+      const TextStyle(color: Color(0xFF333333), fontSize: 15.0);
+
+  MyHomePage({super.key, required this.title});
 
   // This widget is the home page of your application. It is stateful, meaning
   // that it has a State object (defined below) that contains fields that affect
@@ -64,7 +56,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
-
+  bool _isLeftPanelOpen = true;
   void _incrementCounter() {
     setState(() {
       // This call to setState tells the Flutter framework that something has
@@ -85,22 +77,31 @@ class _MyHomePageState extends State<MyHomePage> {
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
     return Scaffold(
-      // appBar: AppBar(
-      //   // TRY THIS: Try changing the color here to a specific color (to
-      //   // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
-      //   // change color while the other colors stay the same.
-      //   backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-      //   // Here we take the value from the MyHomePage object that was created by
-      //   // the App.build method, and use it to set our appbar title.
-      //   title: Text(widget.title),
+      // appBar: PreferredSize(
+      //   preferredSize: Size.fromHeight(20), // 自定义 AppBar 高度
+      //   child: AppBar(
+      //     // TRY THIS: Try changing the color here to a specific color (to
+      //     // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
+      //     // change color while the other colors stay the same.
+      //     backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+      //     // Here we take the value from the MyHomePage object that was created by
+      //     // the App.build method, and use it to set our appbar title.
+      //     title: Text(widget.title),
+      //   ),
       // ),
       body: RuiLayoutAdmin(
+        headerMainPanel: _buildHeader(),
+        headerToolsPanel: const RuiHeadToolsBar(),
+        headerUserPanel: _buildHeaderUserPanel(),
+        leftLogoWidget: _buildLeftLogoPanel(),
+        leftMainPanel: _buildLeftMainPanel(),
+        leftFooterWidget: _buildLeftFooterPanel(),
         body: _buildBody(),
-        header: _buildHeader(),
-        footer: _buildFooter(),
-        leftNavPanel: _buildLeftNavPanel(),
-        rightMenuButtons: _buildRightMenuButtons(),
+        footerPanel: _buildFooter(),
+        // rightMenuButtons: _buildRightMenuButtons(),
         rightPanel: _buildRightPanel(),
+
+        onLeftBarToggle: onLeftBarToggle,
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: _incrementCounter,
@@ -113,7 +114,20 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget _buildHeader() {
     return Container(
       // color: Colors.blue,
-      child: Text("Header"),
+      child: Text("Demo of Rui"),
+    );
+  }
+
+  Widget _buildHeaderUserPanel() {
+    return Container(
+      child: Row(
+        children: [
+          RuiLoginStatusPanel(
+            userName: "userName",
+            userImage: "https://www.ked.pub/images/avatar.jpg",
+          ),
+        ],
+      ),
     );
   }
 
@@ -134,15 +148,76 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  Widget _buildLeftNavPanel() {
-    return Container(
-      // color: Colors.yellow,
-      child: Column(
-        children: List.generate(100, (i) {
-          return Text("ITEM ");
-        }),
-      ),
+  Widget _buildLeftLogoPanel() {
+    return RuiLogoPanel(
+      isOpen: true,
+      width: 200,
+      height: 56,
+      icon: Icon(Icons.apple),
+      title: _isLeftPanelOpen ? 'Listenor' : null,
+      widthClose: 56,
     );
+  }
+
+  Widget _buildLeftMainPanel() {
+    // return Text("data");
+    return RuiLeftNavBar(
+        isOpen: _isLeftPanelOpen, menuItems: genLeftMenuItems());
+  }
+
+  Widget _buildLeftFooterPanel() {
+    return Text("Footer");
+  }
+
+  void onLeftBarToggle(bool isOpen) {
+    setState(() {
+      _isLeftPanelOpen = isOpen;
+    });
+  }
+
+  List<Widget> genLeftMenuItems() {
+    return [
+      MenuItemButton(
+        child: const Text("Home"),
+        leadingIcon: Icon(Icons.home),
+        onPressed: () {
+          print("Home");
+          print(MediaQuery.of(context).size.height);
+        },
+      ),
+      SubmenuButton(
+        child: const Text("About"),
+        leadingIcon: Icon(Icons.info),
+        menuChildren: [
+          MenuItemButton(
+            child: const Text("About Us"),
+            leadingIcon: Icon(Icons.person),
+            onPressed: () {
+              print("About Us");
+            },
+          ),
+          MenuItemButton(
+            child: const Text("Contact Us"),
+            leadingIcon: Icon(Icons.email),
+            onPressed: () {
+              print("Contact Us");
+            },
+          ),
+        ],
+      ),
+      const SubmenuButton(
+        leadingIcon: Icon(Icons.settings),
+        menuChildren: [],
+        child: Text("Settings"),
+      ),
+      MenuItemButton(
+        leadingIcon: const Icon(Icons.logout),
+        onPressed: () {
+          print("Logout");
+        },
+        child: const Text("Logout"),
+      ),
+    ];
   }
 
   List<MenuItemButton> _buildRightMenuButtons() {

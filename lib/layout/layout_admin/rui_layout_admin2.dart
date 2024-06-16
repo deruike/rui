@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:rui/components/list/rui_left_nav_bar.dart';
@@ -7,7 +5,7 @@ import 'package:rui/components/panels/head_tools_bar.dart';
 import 'package:rui/components/user/rui_login_status_panel.dart';
 import 'package:rui/components/user/mini_login_status_widget.dart';
 
-class RuiLayoutAdmin extends StatefulWidget {
+class RuiLayoutAdmin2 extends StatefulWidget {
   final Widget body;
   final Widget? headerMainPanel;
   final Widget? headerToolsPanel;
@@ -19,8 +17,7 @@ class RuiLayoutAdmin extends StatefulWidget {
   final Widget? footerPanel;
   final List<MenuItemButton>? rightMenuButtons;
 
-  final Function(bool)? onLeftBarToggle;
-  const RuiLayoutAdmin({
+  const RuiLayoutAdmin2({
     super.key,
     required this.body,
     this.headerMainPanel,
@@ -32,14 +29,13 @@ class RuiLayoutAdmin extends StatefulWidget {
     this.rightPanel,
     this.footerPanel,
     this.rightMenuButtons,
-    this.onLeftBarToggle,
   });
 
   @override
-  State<RuiLayoutAdmin> createState() => _RuiLayoutState();
+  State<RuiLayoutAdmin2> createState() => _RuiLayoutState();
 }
 
-class _RuiLayoutState extends State<RuiLayoutAdmin> {
+class _RuiLayoutState extends State<RuiLayoutAdmin2> {
   bool _isRightPanelOpen = false;
   bool _isLeftPanelOpen = false;
 
@@ -48,59 +44,55 @@ class _RuiLayoutState extends State<RuiLayoutAdmin> {
 
   static const double LEFT_WIDTH = 200;
   static const double LEFT_WIDTH_CLOSE = 56;
-  static const double LEFT_LOGO_BAR_HEIGHT = TOP_HEIGHT;
-  static const double LEFT_FOOTER_HEIGHT = 32;
-  static const double LEFT_CLOSE_BTN_WIDTH = 48;
+  static const double LEFT_TOPBAR_HEIGHT = TOP_HEIGHT;
 
   static const double RIGHT_PANEL_WIDTH = 200;
   static const double RIGHT_PANEL_CLOSE_WIDTH = 32;
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        SizedBox(
-          width: max(500, MediaQuery.of(context).size.width),
-          height: MediaQuery.of(context).size.height,
-          child: Row(
-            children: [
-              _buildLeftPanel(),
-              Expanded(
-                child: Column(
-                  children: [
-                    _buildHeaderPanel(),
-                    Expanded(
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: Container(
-                              height: MediaQuery.of(context).size.height -
-                                  TOP_HEIGHT -
-                                  BOTTOM_HEIGHT,
-                              width: MediaQuery.of(context).size.width -
-                                  (_isLeftPanelOpen ? LEFT_WIDTH : 0),
-                              child: widget.body,
-                            ),
-                          ),
-                          if (widget.rightPanel != null) _buildRightPanel(),
-                        ],
+    return SizedBox(
+      width: MediaQuery.of(context).size.width,
+      height: MediaQuery.of(context).size.height,
+      child: Row(
+        children: [
+          _buildLeftPanel(),
+          Expanded(
+            child: Column(
+              children: [
+                _buildHeaderPanel(),
+                Expanded(
+                  child: Row(
+                    children: [
+                      Expanded(
+                        // child: Text("ttt"),
+                        child: Container(
+                          height: MediaQuery.of(context).size.height -
+                              TOP_HEIGHT -
+                              BOTTOM_HEIGHT,
+                          width: MediaQuery.of(context).size.width -
+                              (_isLeftPanelOpen ? LEFT_WIDTH : 0),
+                          // color: Colors.green,
+                          child: widget.body,
+                        ),
                       ),
-                    ),
-                    if (widget.footerPanel != null) _buildFooterPanel(),
-                  ],
+                      if (widget.rightPanel != null) _buildRightPanel(),
+                    ],
+                  ),
                 ),
-              ),
-            ],
+                if (widget.footerPanel != null) _buildFooterPanel(),
+              ],
+            ),
           ),
-        ),
-        _buildLeftToggleButton(),
-      ],
+        ],
+      ),
     );
   }
 
   Widget _buildHeaderPanel() {
     return Container(
       height: TOP_HEIGHT,
+      // color: Colors.blue,
       decoration: BoxDecoration(
         color: Theme.of(context).scaffoldBackgroundColor,
         border: Border(
@@ -116,9 +108,23 @@ class _RuiLayoutState extends State<RuiLayoutAdmin> {
         ],
       ),
       child: Row(
+        mainAxisAlignment: _isLeftPanelOpen
+            ? MainAxisAlignment.start
+            : MainAxisAlignment.center,
         children: [
-          Container(width: LEFT_CLOSE_BTN_WIDTH),
-          Expanded(child: widget.headerMainPanel ?? const Text("")),
+          IconButton(
+            icon: Icon(_isLeftPanelOpen
+                ? Icons.format_indent_decrease_outlined
+                : Icons.format_indent_increase_outlined),
+            onPressed: () {
+              setState(() {
+                _isLeftPanelOpen = !_isLeftPanelOpen;
+              });
+            },
+          ),
+          Expanded(
+            child: widget.headerMainPanel ?? const Text("Title"),
+          ),
           if (widget.headerToolsPanel != null) widget.headerToolsPanel!,
           if (widget.headerUserPanel != null) widget.headerUserPanel!,
           // if (widget.rightMenuButtons != null) widget.rightMenuButtons!,
@@ -138,59 +144,62 @@ class _RuiLayoutState extends State<RuiLayoutAdmin> {
     );
   }
 
-  Widget _buildLeftToggleButton() {
-    return Positioned(
-      left: _isLeftPanelOpen ? LEFT_WIDTH : LEFT_WIDTH_CLOSE,
-      child: SizedBox(
-        width: LEFT_CLOSE_BTN_WIDTH,
-        height: LEFT_CLOSE_BTN_WIDTH,
-        child: IconButton(
-          onPressed: () {
-            setState(() {
-              _isLeftPanelOpen = !_isLeftPanelOpen;
-              if (widget.onLeftBarToggle != null) {
-                widget.onLeftBarToggle!(_isLeftPanelOpen);
-              }
-            });
-          },
-          icon: Icon(_isLeftPanelOpen
-              ? Icons.format_indent_decrease_rounded
-              : Icons.format_indent_increase_rounded),
-        ),
-      ),
-    );
-  }
-
   Widget _buildLeftPanel() {
     return SizedBox(
       width: _isLeftPanelOpen ? LEFT_WIDTH : LEFT_WIDTH_CLOSE,
       height: MediaQuery.of(context).size.height,
       child: Container(
         color: Theme.of(context).colorScheme.primaryContainer,
-        // width: _isLeftPanelOpen ? LEFT_WIDTH : LEFT_WIDTH_CLOSE,
         child: Column(
           children: [
-            _buildLeftLogoPanel(),
-            SizedBox(
-              // width: _isLeftPanelOpen ? LEFT_WIDTH : LEFT_WIDTH_CLOSE,
-              height: MediaQuery.of(context).size.height -
-                  LEFT_LOGO_BAR_HEIGHT -
-                  LEFT_FOOTER_HEIGHT,
-              child: widget.leftMainPanel ??
-                  const Text("please set leftMainPanel"),
+            _buildLeftTop(),
+            Expanded(
+              child: widget.leftMainPanel ?? const Text("Left Nav Panel"),
             ),
             if (widget.leftFooterWidget != null)
-              Container(child: widget.leftFooterWidget!),
+              Container(
+                child: widget.leftFooterWidget!,
+              ),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildLeftLogoPanel() {
+  Widget _buildLeftTop() {
     return SizedBox(
-      width: (_isLeftPanelOpen ? LEFT_WIDTH : LEFT_WIDTH_CLOSE),
-      child: widget.leftLogoWidget!,
+      height: LEFT_TOPBAR_HEIGHT,
+      child: Container(
+        decoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.primary.withAlpha(128),
+          border: Border(
+            bottom: BorderSide(color: Theme.of(context).splashColor),
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: Theme.of(context).shadowColor.withOpacity(0.5),
+              spreadRadius: 5,
+              blurRadius: 7,
+              offset: Offset(5, 3), // changes position of shadow
+              // color: Colors.red,
+              // offset: Offset(0, 3), // changes position of shadow
+            ),
+          ],
+        ),
+        child: Row(
+          mainAxisAlignment: _isLeftPanelOpen
+              ? MainAxisAlignment.start
+              : MainAxisAlignment.center,
+          // crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(
+              width: LEFT_WIDTH_CLOSE,
+              child: Center(child: Icon(Icons.apple)),
+            ),
+            if (_isLeftPanelOpen) Text("APP "),
+          ],
+        ),
+      ),
     );
   }
 

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 // import 'package:flutter/widgets.dart';
 // import 'package:get/get.dart';
-import 'package:rui/components/user/login_status_panel.dart';
+import 'package:rui/components/user/rui_login_status_panel.dart';
 // import 'package:listenor/app/core/widgets/login_status_panel.dart';
 
 class TopBarMenuItem {
@@ -76,7 +76,7 @@ class _WebTopNavBarState extends State<WebTopNavBar> {
   @override
   void initState() {
     super.initState();
-    _isDarkMode = Get.isDarkMode;
+    // _isDarkMode = Get.isDarkMode;
   }
 
   @override
@@ -176,19 +176,19 @@ class _WebTopNavBarState extends State<WebTopNavBar> {
         ),
         ElevatedButton(
           onPressed: () {
-            if (Get.locale != null && Get.locale!.countryCode == 'US') {
-              Get.updateLocale(const Locale('zh', 'CN'));
-            } else {
-              Get.updateLocale(const Locale('en', 'US'));
-            }
+            // if (Get.locale != null && Get.locale!.countryCode == 'US') {
+            //   Get.updateLocale(const Locale('zh', 'CN'));
+            // } else {
+            //   Get.updateLocale(const Locale('en', 'US'));
+            // }
           },
-          child: Row(
+          child: const Row(
             children: [
               const Icon(Icons.language),
               const SizedBox(
                 width: 5,
               ),
-              Text('En/Cn'.tr)
+              Text('En/Cn')
             ],
           ),
         ),
@@ -201,7 +201,7 @@ class _WebTopNavBarState extends State<WebTopNavBar> {
   }
 
   Widget _buildUserPanel() {
-    return LoginStatusPanel(
+    return RuiLoginStatusPanel(
       userName: widget.userName,
       userImage: widget.userImage,
       userAddress: widget.userAddress,
@@ -219,6 +219,6 @@ class _WebTopNavBarState extends State<WebTopNavBar> {
   }
 
   void _onTapSearch() {
-    Get.snackbar("search", "message");
+    // Get.snackbar("search", "message");
   }
 }

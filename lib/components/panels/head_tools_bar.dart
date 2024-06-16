@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:rui/components/form/rui_input.dart';
 import 'package:rui/components/setting/theme_setting_button.dart';
 
-class TopRightTools extends StatefulWidget {
-  const TopRightTools({super.key});
+class RuiHeadToolsBar extends StatefulWidget {
+  const RuiHeadToolsBar({super.key});
 
   @override
-  State<TopRightTools> createState() => _TopRightToolsState();
+  State<RuiHeadToolsBar> createState() => _RuiHeadToolsBarState();
 }
 
-class _TopRightToolsState extends State<TopRightTools> {
+class _RuiHeadToolsBarState extends State<RuiHeadToolsBar> {
   bool _isSearchActive = false;
 
   @override

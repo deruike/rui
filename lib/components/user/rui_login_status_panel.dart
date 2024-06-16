@@ -15,7 +15,7 @@ class ProfileItem {
       required this.onTap});
 }
 
-class LoginStatusPanel extends StatefulWidget {
+class RuiLoginStatusPanel extends StatefulWidget {
   final String userName;
   final String? userImage;
   final String? userEmail;
@@ -32,7 +32,7 @@ class LoginStatusPanel extends StatefulWidget {
   final DateTime? userLastLogout;
   Function? onTapLogout;
 
-  LoginStatusPanel({
+  RuiLoginStatusPanel({
     Key? key,
     required this.userName,
     this.userImage,
@@ -52,10 +52,10 @@ class LoginStatusPanel extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _LoginStatusPanelState createState() => _LoginStatusPanelState();
+  _RuiLoginStatusPanelState createState() => _RuiLoginStatusPanelState();
 }
 
-class _LoginStatusPanelState extends State<LoginStatusPanel> {
+class _RuiLoginStatusPanelState extends State<RuiLoginStatusPanel> {
   List<ProfileItem> profileItems = [];
 
   bool _showPanel = false;
