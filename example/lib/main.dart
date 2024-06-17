@@ -1,36 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:rui/components/list/rui_left_nav_bar.dart';
+// import 'package:rui/rui_material_app.dart';
 import 'package:rui/components/panels/head_tools_bar.dart';
 import 'package:rui/components/panels/rui_logo_panel.dart';
 import 'package:rui/components/user/rui_login_status_panel.dart';
 
 import 'package:rui/index.dart';
 
+import 'package:rui/rui_app.dart';
+
 void main() {
-  runApp(const MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  // This widget is the root of your application.
-  @override
-  Widget build(BuildContext context) {
-    final brightness = MediaQuery.of(context).platformBrightness;
-
-    return MaterialApp(
-      title: 'Flutter Demo',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(
-            seedColor: Colors.greenAccent, brightness: brightness),
-        useMaterial3: true,
-        fontFamily: "PingFang",
-      ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
-    );
-  }
+  // runApp(const MyApp());
+  runApp(RuiApp(
+    title: "RUI APP",
+    home: MyHomePage(
+      title: 'Flutter Demo Home Page',
+    ),
+  ));
 }
 
 class MyHomePage extends StatefulWidget {

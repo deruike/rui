@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:rui/theme_model.dart';
+import 'package:rui/theme/rui_theme.dart';
 
 class ThemeSettingButton extends StatelessWidget {
   Function(Color)? onThemeColorChange;
@@ -13,43 +16,52 @@ class ThemeSettingButton extends StatelessWidget {
       // alignmentOffset: Offset(0, 0),
       menuChildren: [
         CheckboxMenuButton(
-          value: Theme.of(context).brightness == Brightness.dark,
+          value: Provider.of<ThemeModel>(context).themeMode == ThemeMode.dark,
           onChanged: (bool? value) {
+            Provider.of<ThemeModel>(context, listen: false)
+                .setThemeMode(ThemeMode.dark);
+
             if (onThemeModeChange != null) onThemeModeChange!(ThemeMode.dark);
           },
-          child: Text('Dark'),
-          trailingIcon: Icon(Icons.dark_mode),
+          trailingIcon: const Icon(Icons.dark_mode),
+          child: const Text('Dark'),
         ),
         CheckboxMenuButton(
-          value: Theme.of(context).brightness == Brightness.light,
+          value: Provider.of<ThemeModel>(context).themeMode == ThemeMode.light,
           onChanged: (bool? value) {
+            Provider.of<ThemeModel>(context, listen: false)
+                .setThemeMode(ThemeMode.light);
             if (onThemeModeChange != null) onThemeModeChange!(ThemeMode.light);
           },
-          child: Text('Light'),
-          trailingIcon: Icon(Icons.light_mode),
+          trailingIcon: const Icon(Icons.light_mode),
+          child: const Text('Light'),
         ),
         CheckboxMenuButton(
-          value: Theme.of(context).brightness == Brightness.light,
+          value: Provider.of<ThemeModel>(context).themeMode == ThemeMode.system,
           onChanged: (bool? value) {
+            Provider.of<ThemeModel>(context, listen: false)
+                .setThemeMode(ThemeMode.system);
             if (onThemeModeChange != null) onThemeModeChange!(ThemeMode.system);
           },
-          child: Text('System'),
-          trailingIcon: Icon(Icons.light_mode),
+          trailingIcon: const Icon(Icons.light_mode),
+          child: const Text('System'),
         ),
-        PopupMenuDivider(),
-        MenuItemButton(
-          child: Text('Blue'),
-          onPressed: () {
-            if (onThemeColorChange != null) onThemeColorChange!(Colors.blue);
-          },
-        ),
-        MenuItemButton(
-          child: Text('Blue gray'),
-          onPressed: () {
-            if (onThemeColorChange != null)
-              onThemeColorChange!(Colors.blueGrey);
-          },
-        ),
+        const PopupMenuDivider(),
+        ...themeColorMap.keys.map((key) {
+          return MenuItemButton(
+            style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.all(themeColorMap[key]!),
+            ),
+            child: Row(
+              children: [Icon(Icons.color_lens_outlined), Text(key)],
+            ),
+            onPressed: () {
+              Provider.of<ThemeModel>(context, listen: false).setTheme(key);
+              if (onThemeColorChange != null)
+                onThemeColorChange!(themeColorMap[key]!);
+            },
+          );
+        }).toList(),
       ],
 
       builder:
