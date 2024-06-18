@@ -5,21 +5,19 @@ import 'package:flutter/widgets.dart';
 import 'package:rui/storage/rui_storage_manager.dart';
 
 class ThemeModel with ChangeNotifier {
-  Future<void> load() async {
-    _seedColor =
-        await RuiStorageManager.getString('theme_seed_color') ?? 'blue';
+  ThemeModel();
+
+  void setThemeModel(ThemeModel tm) {
+    _themeMode = tm.themeMode;
+    _themeSeedColor = tm.themeSeedColor;
     notifyListeners();
   }
 
-  Future<void> save() async {
-    await RuiStorageManager.setString('theme_seed_color', _seedColor);
-  }
-
-  String _seedColor = 'blue';
-  String get seedColor => _seedColor;
-  void setTheme(color) async {
-    _seedColor = color;
-    print("select $_seedColor");
+  String _themeSeedColor = 'blue';
+  String get themeSeedColor => _themeSeedColor;
+  void setThemeSeedColor(String color) async {
+    _themeSeedColor = color;
+    print("select $_themeSeedColor");
     await RuiStorageManager.setString('seedColor', color);
     notifyListeners(); //通知依赖的Widget更新
   }

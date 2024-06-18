@@ -13,6 +13,7 @@ import 'package:rui/theme/rui_theme.dart';
 class RuiApp extends StatefulWidget {
   final Widget home;
   final String title;
+  final ThemeModel? themeModel;
 
   Function<bool>(String token)? onCheckUserLoginStatus;
 
@@ -23,6 +24,7 @@ class RuiApp extends StatefulWidget {
     super.key,
     required this.home,
     this.title = "",
+    this.themeModel,
     // this.themeColorSeed = Colors.blueGrey,
     this.onCheckUserLoginStatus,
   });
@@ -34,15 +36,8 @@ class _RuiAppState extends State<RuiApp> {
   void initState() {
     super.initState();
 
-    RuiStorageManager.load().then((bool ok) {
-      setState(() {
-        isLoading = false;
-      });
-    }).onError((e, st) {
-      print(e);
-      setState(() {
-        isLoading = false;
-      });
+    setState(() {
+      isLoading = false;
     });
   }
 
@@ -52,7 +47,9 @@ class _RuiAppState extends State<RuiApp> {
 
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (context) => ThemeModel()), //此是主题状态注册
+        ChangeNotifierProvider(
+            create: (context) => ThemeModel()
+              ..setThemeModel(widget.themeModel ?? ThemeModel())), //此是主题状态注册
       ],
       child: Consumer<ThemeModel>(
         //主题设置1：状态获取方式
@@ -60,7 +57,8 @@ class _RuiAppState extends State<RuiApp> {
           return MaterialApp(
             title: widget.title,
             debugShowCheckedModeBanner: false,
-            theme: getThemeData(themeModel.themeMode, themeModel.seedColor),
+            theme:
+                getThemeData(themeModel.themeMode, themeModel.themeSeedColor),
             // home: LandingPage(home: home),
             home: isLoading ? _buildLoading() : widget.home,
           );

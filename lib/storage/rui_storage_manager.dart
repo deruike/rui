@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:rui/provider/theme_model.dart';
+import 'package:rui/theme/rui_theme.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class RuiStorageManager {
@@ -16,12 +17,19 @@ class RuiStorageManager {
     return _sp!;
   }
 
-  static Future<bool> load() async {
+  static Future<ThemeModel> load() async {
     var sp = await getSharedPreferences();
 
-    // ThemeModel.setThemeMode(  sp.getString("themeMode") ?? "system") ;
+    ThemeModel themeModel = ThemeModel();
 
-    return true;
+    themeModel.setThemeMode((sp.getString("themeMode") ?? "system") == "system"
+        ? ThemeMode.system
+        : ThemeMode.light);
+
+    String cl = sp.getString("seedColor") ?? "blueGrey";
+    themeModel.setThemeSeedColor(cl);
+
+    return themeModel;
   }
 
   static Future<bool> save() async {

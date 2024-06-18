@@ -6,18 +6,22 @@ import 'package:rui/components/list/rui_left_nav_bar.dart';
 import 'package:rui/components/panels/head_tools_bar.dart';
 import 'package:rui/components/panels/rui_logo_panel.dart';
 import 'package:rui/components/user/rui_login_status_panel.dart';
+import 'package:rui/provider/theme_model.dart';
+import 'package:rui/storage/rui_storage_manager.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 // import 'package:rui/index.dart';
 
 import 'package:rui/rui_app.dart';
 
-void main() {
-  // SharedPreferences.setMockInitialValues({});
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
 
-  // runApp(const MyApp());
+  ThemeModel themeModel = await RuiStorageManager.load();
+
   runApp(RuiApp(
     title: "RUI APP",
+    themeModel: themeModel,
     home: MyHomePage(
       title: 'Flutter Demo Home Page',
     ),
