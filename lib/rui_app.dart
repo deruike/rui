@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:rui/theme_model.dart';
-import 'package:rui/theme/app_theme.dart';
+// import 'package:rui/theme/app_theme.dart';
 import 'package:rui/theme/rui_theme.dart';
 
 class RuiApp extends StatelessWidget {
