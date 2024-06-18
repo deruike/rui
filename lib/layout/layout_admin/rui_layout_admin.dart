@@ -20,6 +20,8 @@ class RuiLayoutAdmin extends StatefulWidget {
   final List<MenuItemButton>? rightMenuButtons;
 
   final Function(bool)? onLeftBarToggle;
+  final Function(bool)? onRightPanelToggle;
+
   const RuiLayoutAdmin({
     super.key,
     required this.body,
@@ -33,6 +35,7 @@ class RuiLayoutAdmin extends StatefulWidget {
     this.footerPanel,
     this.rightMenuButtons,
     this.onLeftBarToggle,
+    this.onRightPanelToggle,
   });
 
   @override
@@ -41,19 +44,26 @@ class RuiLayoutAdmin extends StatefulWidget {
 
 class _RuiLayoutState extends State<RuiLayoutAdmin> {
   bool _isRightPanelOpen = false;
-  bool _isLeftPanelOpen = false;
+  bool _isLeftPanelOpen = true;
 
-  static const double TOP_HEIGHT = 48;
-  static const double BOTTOM_HEIGHT = 48;
+//
+  static const double TOP_HEADER_HEIGHT = 48;
+  static const double BOTTOM_FOOTER_HEIGHT = 48;
 
-  static const double LEFT_WIDTH = 200;
-  static const double LEFT_WIDTH_CLOSE = 56;
-  static const double LEFT_LOGO_BAR_HEIGHT = TOP_HEIGHT;
-  static const double LEFT_FOOTER_HEIGHT = 32;
-  static const double LEFT_CLOSE_BTN_WIDTH = 48;
+  static const double LEFT_BAR_WIDTH = 200;
+  static const double LEFT_BAR_CLOSED_WIDTH = 56;
+  static const double LEFT_BAR_TOP_LOGO_HEIGHT = TOP_HEADER_HEIGHT;
+  static const double LEFT_BAR_FOOTER_HEIGHT = 32;
+  static const double LEFT_BAR_CLOSE_BTN_SIZE = 48;
 
   static const double RIGHT_PANEL_WIDTH = 200;
-  static const double RIGHT_PANEL_CLOSE_WIDTH = 32;
+  static const double RIGHT_PANEL_CLOSED_WIDTH = 0;
+  static const double RIGHT_PANEL_CLOSE_BTN_SIZE = 48;
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -75,10 +85,10 @@ class _RuiLayoutState extends State<RuiLayoutAdmin> {
                           Expanded(
                             child: Container(
                               height: MediaQuery.of(context).size.height -
-                                  TOP_HEIGHT -
-                                  BOTTOM_HEIGHT,
+                                  TOP_HEADER_HEIGHT -
+                                  BOTTOM_FOOTER_HEIGHT,
                               width: MediaQuery.of(context).size.width -
-                                  (_isLeftPanelOpen ? LEFT_WIDTH : 0),
+                                  (_isLeftPanelOpen ? LEFT_BAR_WIDTH : 0),
                               child: widget.body,
                             ),
                           ),
@@ -94,13 +104,14 @@ class _RuiLayoutState extends State<RuiLayoutAdmin> {
           ),
         ),
         _buildLeftToggleButton(),
+        if (widget.rightPanel != null) _buildRightToggleButton(),
       ],
     );
   }
 
   Widget _buildHeaderPanel() {
     return Container(
-      height: TOP_HEIGHT,
+      height: TOP_HEADER_HEIGHT,
       decoration: BoxDecoration(
         color: Theme.of(context).scaffoldBackgroundColor,
         border: Border(
@@ -117,22 +128,11 @@ class _RuiLayoutState extends State<RuiLayoutAdmin> {
       ),
       child: Row(
         children: [
-          Container(width: LEFT_CLOSE_BTN_WIDTH),
+          Container(width: LEFT_BAR_CLOSE_BTN_SIZE),
           Expanded(child: widget.headerMainPanel ?? const Text("")),
           if (widget.headerToolsPanel != null) widget.headerToolsPanel!,
           if (widget.headerUserPanel != null) widget.headerUserPanel!,
-          // if (widget.rightMenuButtons != null) widget.rightMenuButtons!,
-          if (widget.rightPanel != null)
-            IconButton(
-              icon: Icon(_isRightPanelOpen
-                  ? Icons.keyboard_double_arrow_right_outlined
-                  : Icons.keyboard_double_arrow_left_outlined),
-              onPressed: () {
-                setState(() {
-                  _isRightPanelOpen = !_isRightPanelOpen;
-                });
-              },
-            ),
+          if (widget.rightMenuButtons != null) _buildMenuAnchor(),
         ],
       ),
     );
@@ -140,10 +140,10 @@ class _RuiLayoutState extends State<RuiLayoutAdmin> {
 
   Widget _buildLeftToggleButton() {
     return Positioned(
-      left: _isLeftPanelOpen ? LEFT_WIDTH : LEFT_WIDTH_CLOSE,
+      left: _isLeftPanelOpen ? LEFT_BAR_WIDTH : LEFT_BAR_CLOSED_WIDTH,
       child: SizedBox(
-        width: LEFT_CLOSE_BTN_WIDTH,
-        height: LEFT_CLOSE_BTN_WIDTH,
+        width: LEFT_BAR_CLOSE_BTN_SIZE,
+        height: LEFT_BAR_CLOSE_BTN_SIZE,
         child: IconButton(
           onPressed: () {
             setState(() {
@@ -161,21 +161,48 @@ class _RuiLayoutState extends State<RuiLayoutAdmin> {
     );
   }
 
+  Widget _buildRightToggleButton() {
+    return Positioned(
+      left: MediaQuery.of(context).size.width -
+          RIGHT_PANEL_CLOSE_BTN_SIZE -
+          (_isRightPanelOpen ? RIGHT_PANEL_WIDTH : RIGHT_PANEL_CLOSED_WIDTH),
+      top:
+          (MediaQuery.of(context).size.height - RIGHT_PANEL_CLOSE_BTN_SIZE) / 2,
+      child: SizedBox(
+        width: RIGHT_PANEL_CLOSE_BTN_SIZE,
+        height: RIGHT_PANEL_CLOSE_BTN_SIZE,
+        child: IconButton(
+          onPressed: () {
+            setState(() {
+              _isRightPanelOpen = !_isRightPanelOpen;
+              if (widget.onRightPanelToggle != null) {
+                widget.onRightPanelToggle!(_isRightPanelOpen);
+              }
+            });
+          },
+          icon: Icon(_isRightPanelOpen
+              ? Icons.keyboard_double_arrow_right_rounded
+              : Icons.keyboard_double_arrow_left_rounded),
+        ),
+      ),
+    );
+  }
+
   Widget _buildLeftPanel() {
     return SizedBox(
-      width: _isLeftPanelOpen ? LEFT_WIDTH : LEFT_WIDTH_CLOSE,
+      width: _isLeftPanelOpen ? LEFT_BAR_WIDTH : LEFT_BAR_CLOSED_WIDTH,
       height: MediaQuery.of(context).size.height,
       child: Container(
         color: Theme.of(context).colorScheme.primaryContainer,
-        // width: _isLeftPanelOpen ? LEFT_WIDTH : LEFT_WIDTH_CLOSE,
+        // width: _isLeftPanelOpen ? LEFT_BAR_WIDTH : LEFT_BAR_CLOSED_WIDTH,
         child: Column(
           children: [
             _buildLeftLogoPanel(),
             SizedBox(
-              // width: _isLeftPanelOpen ? LEFT_WIDTH : LEFT_WIDTH_CLOSE,
+              // width: _isLeftPanelOpen ? LEFT_BAR_WIDTH : LEFT_BAR_CLOSED_WIDTH,
               height: MediaQuery.of(context).size.height -
-                  LEFT_LOGO_BAR_HEIGHT -
-                  LEFT_FOOTER_HEIGHT,
+                  LEFT_BAR_TOP_LOGO_HEIGHT -
+                  LEFT_BAR_FOOTER_HEIGHT,
               child: widget.leftMainPanel ??
                   const Text("please set leftMainPanel"),
             ),
@@ -189,29 +216,49 @@ class _RuiLayoutState extends State<RuiLayoutAdmin> {
 
   Widget _buildLeftLogoPanel() {
     return SizedBox(
-      width: (_isLeftPanelOpen ? LEFT_WIDTH : LEFT_WIDTH_CLOSE),
+      width: (_isLeftPanelOpen ? LEFT_BAR_WIDTH : LEFT_BAR_CLOSED_WIDTH),
       child: widget.leftLogoWidget!,
     );
   }
 
   Widget _buildRightPanel() {
     return Container(
-      width: _isRightPanelOpen ? RIGHT_PANEL_WIDTH : RIGHT_PANEL_CLOSE_WIDTH,
-      // color: Colors.blue,
-      child: _isRightPanelOpen ? widget.rightPanel : SizedBox(width: 10),
+      width: _isRightPanelOpen ? RIGHT_PANEL_WIDTH : RIGHT_PANEL_CLOSED_WIDTH,
+      height: MediaQuery.of(context).size.height,
+      color: Colors.blue,
+      child: _isRightPanelOpen
+          ? widget.rightPanel
+          : SizedBox(width: RIGHT_PANEL_CLOSED_WIDTH),
     );
   }
 
-  Widget _buildMenuAnchor(_, MenuController controller, Widget? child) {
+  Widget _buildMenuAnchor() {
     return GestureDetector(
-      onTap: controller.open,
-      child: Icon(Icons.menu),
+      // onTap: controller.open,
+      child: MenuAnchor(
+        alignmentOffset: Offset.fromDirection(3, 56),
+        menuChildren: widget.rightMenuButtons as List<Widget>,
+        builder:
+            (BuildContext context, MenuController controller, Widget? child) {
+          return IconButton(
+            // focusNode: _buttonFocusNode,
+            onPressed: () {
+              if (controller.isOpen) {
+                controller.close();
+              } else {
+                controller.open();
+              }
+            },
+            icon: const Icon(Icons.menu),
+          );
+        },
+      ),
     );
   }
 
   Widget _buildFooterPanel() {
     return Container(
-      height: BOTTOM_HEIGHT,
+      height: BOTTOM_FOOTER_HEIGHT,
       width: MediaQuery.of(context).size.width,
       // color: Colors.blue,
       child: widget.footerPanel,
@@ -221,9 +268,11 @@ class _RuiLayoutState extends State<RuiLayoutAdmin> {
   Widget _buildBody() {
     return Expanded(
       child: Container(
-        height: MediaQuery.of(context).size.height - TOP_HEIGHT - BOTTOM_HEIGHT,
+        height: MediaQuery.of(context).size.height -
+            TOP_HEADER_HEIGHT -
+            BOTTOM_FOOTER_HEIGHT,
         width: MediaQuery.of(context).size.width -
-            (_isLeftPanelOpen ? LEFT_WIDTH : 0),
+            (_isLeftPanelOpen ? LEFT_BAR_WIDTH : 0),
         // color: Colors.green,
         child: widget.body,
       ),
