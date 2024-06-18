@@ -1,16 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:rui/components/layout/layout_admin/rui_layout_admin.dart';
 import 'package:rui/components/list/rui_left_nav_bar.dart';
 // import 'package:rui/rui_material_app.dart';
 import 'package:rui/components/panels/head_tools_bar.dart';
 import 'package:rui/components/panels/rui_logo_panel.dart';
 import 'package:rui/components/user/rui_login_status_panel.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-import 'package:rui/index.dart';
+// import 'package:rui/index.dart';
 
 import 'package:rui/rui_app.dart';
 
 void main() {
+  // SharedPreferences.setMockInitialValues({});
+
   // runApp(const MyApp());
   runApp(RuiApp(
     title: "RUI APP",

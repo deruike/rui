@@ -1,7 +1,3 @@
 library rui;
 
-/// A Calculator.
-class Calculator {
-  /// Returns [value] plus 1.
-  int addOne(int value) => value + 1;
-}
+export 'components/layout/layout_admin/rui_layout_admin.dart';

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 Map<String, Color> themeColorMap = {
-  'red': Colors.red,
+  'red': Colors.redAccent,
   'orange': Colors.orange,
   'yellow': Colors.yellow,
   'green': Colors.green,
