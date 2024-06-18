@@ -98,9 +98,8 @@ class _MyHomePageState extends State<MyHomePage> {
         leftFooterWidget: _buildLeftFooterPanel(),
         body: _buildBody(),
         footerPanel: _buildFooter(),
-        // rightMenuButtons: _buildRightMenuButtons(),
+        rightMenuButtons: _buildRightMenuButtons(),
         rightPanel: _buildRightPanel(),
-
         onLeftBarToggle: onLeftBarToggle,
       ),
       floatingActionButton: FloatingActionButton(
@@ -150,12 +149,10 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Widget _buildLeftLogoPanel() {
     return RuiLogoPanel(
-      isOpen: true,
-      width: 200,
-      height: 56,
-      icon: Icon(Icons.apple),
-      title: _isLeftPanelOpen ? 'Listenor' : null,
-      widthClose: 56,
+      isOpen: _isLeftPanelOpen,
+      logoSize: 56,
+      icon: const Icon(Icons.apple),
+      title: 'Listenor',
     );
   }
 
@@ -166,7 +163,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Widget _buildLeftFooterPanel() {
-    return Text("Footer");
+    return _isLeftPanelOpen ? Text("Footer") : Icon(Icons.abc);
   }
 
   void onLeftBarToggle(bool isOpen) {
@@ -231,6 +228,7 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       MenuItemButton(
         child: Text('print'),
+        shortcut: SingleActivator(LogicalKeyboardKey.keyE, meta: true),
         onPressed: () {
           print("======print==========");
         },

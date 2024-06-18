@@ -2,25 +2,23 @@ import 'package:flutter/material.dart';
 
 class RuiLogoPanel extends StatefulWidget {
   final bool isOpen;
-  final double width;
-  final double widthClose;
-  final double height;
+  final double? logoSize;
+  final double? height;
   final Icon icon;
-  final String? title;
+  final String title;
   final String? subTitle;
   final String? imageUrl;
   final Function? onTap;
   const RuiLogoPanel({
     super.key,
-    required this.isOpen,
-    required this.width,
-    required this.height,
     required this.icon,
-    this.title,
+    required this.title,
     this.subTitle,
     this.imageUrl,
     this.onTap,
-    required this.widthClose,
+    required this.isOpen,
+    this.height = 56,
+    this.logoSize = 56,
   });
 
   @override
@@ -57,10 +55,10 @@ class _RuiLogoPanelState extends State<RuiLogoPanel> {
           // crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SizedBox(
-              width: widget.widthClose,
+              width: widget.logoSize,
               child: Center(child: widget.icon),
             ),
-            if (widget.isOpen) Text(widget.title ?? ""),
+            if (widget.isOpen) Text(widget.title),
           ],
         ),
       ),
