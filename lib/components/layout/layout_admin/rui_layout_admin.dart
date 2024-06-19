@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:rui/components/list/rui_left_nav_bar.dart';
 import 'package:rui/components/panels/head_tools_bar.dart';
+import 'package:rui/components/panels/rui_top_nav_bar.dart';
 import 'package:rui/components/user/rui_login_status_panel.dart';
 import 'package:rui/components/user/mini_login_status_widget.dart';
 
@@ -47,7 +48,8 @@ class _RuiLayoutState extends State<RuiLayoutAdmin> {
   bool _isLeftPanelOpen = true;
 
 //
-  static const double TOP_HEADER_HEIGHT = 48;
+  // static const double TOP_HEADER_HEIGHT = 90;
+  static const double TOP_HEADER_HEIGHT = 50;
   static const double BOTTOM_FOOTER_HEIGHT = 48;
 
   static const double LEFT_BAR_WIDTH = 200;
@@ -72,7 +74,11 @@ class _RuiLayoutState extends State<RuiLayoutAdmin> {
         SizedBox(
           width: max(500, MediaQuery.of(context).size.width),
           height: MediaQuery.of(context).size.height,
-          child: Row(
+          child:
+              //  DefaultTabController(
+              //   length: 3,
+              //   child:
+              Row(
             children: [
               _buildLeftPanel(),
               Expanded(
@@ -90,6 +96,13 @@ class _RuiLayoutState extends State<RuiLayoutAdmin> {
                               width: MediaQuery.of(context).size.width -
                                   (_isLeftPanelOpen ? LEFT_BAR_WIDTH : 0),
                               child: widget.body,
+                              //   TabBarView(
+                              // children: [
+                              //   Icon(Icons.directions_car),
+                              //   Icon(Icons.directions_transit),
+                              //   widget.body,
+                              // ],
+                              // ),
                             ),
                           ),
                           if (widget.rightPanel != null) _buildRightPanel(),
@@ -101,6 +114,7 @@ class _RuiLayoutState extends State<RuiLayoutAdmin> {
                 ),
               ),
             ],
+            // ),
           ),
         ),
         _buildLeftToggleButton(),
@@ -126,13 +140,18 @@ class _RuiLayoutState extends State<RuiLayoutAdmin> {
           ),
         ],
       ),
-      child: Row(
+      child: Column(
         children: [
-          Container(width: LEFT_BAR_CLOSE_BTN_SIZE),
-          Expanded(child: widget.headerMainPanel ?? const Text("")),
-          if (widget.headerToolsPanel != null) widget.headerToolsPanel!,
-          if (widget.headerUserPanel != null) widget.headerUserPanel!,
-          if (widget.rightMenuButtons != null) _buildMenuAnchor(),
+          Row(
+            children: [
+              Container(width: LEFT_BAR_CLOSE_BTN_SIZE),
+              Expanded(child: widget.headerMainPanel ?? const Text("")),
+              if (widget.headerToolsPanel != null) widget.headerToolsPanel!,
+              if (widget.headerUserPanel != null) widget.headerUserPanel!,
+              if (widget.rightMenuButtons != null) _buildMenuAnchor(),
+            ],
+          ),
+          // RuiTopNavBar(),
         ],
       ),
     );

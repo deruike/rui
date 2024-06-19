@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:rui/pages/landing_page.dart';
+import 'package:rui/pages/login_page.dart';
 import 'package:rui/provider/theme_model.dart';
 import 'package:rui/storage/rui_storage_manager.dart';
 // import 'package:rui/theme/app_theme.dart';
@@ -57,6 +58,13 @@ class _RuiAppState extends State<RuiApp> {
           return MaterialApp(
             title: widget.title,
             debugShowCheckedModeBanner: false,
+            // 定义初始路由
+            initialRoute: '/',
+            routes: {
+              // 定义路由映射
+              '/home': (context) => widget.home,
+              '/login': (context) => LoginPage(),
+            },
             theme:
                 getThemeData(themeModel.themeMode, themeModel.themeSeedColor),
             // home: LandingPage(home: home),

@@ -117,8 +117,11 @@ class _MyHomePageState extends State<MyHomePage> {
       child: Row(
         children: [
           RuiLoginStatusPanel(
-            userName: "userName",
-            userImage: "https://www.ked.pub/images/avatar.jpg",
+            userName: "张三",
+            userPhone: "18000000000",
+            userImage:
+                "https://th.bing.com/th?id=OSK.f7f4e9af4e9ca9ea2585e5df12ff1c5f&w=80&h=80&c=7&o=6&dpr=2&pid=SANGAM",
+            userEmail: "test@qwe.com",
           ),
         ],
       ),
@@ -128,9 +131,18 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget _buildBody() {
     return Container(
       // color: Colors.red,
-      child: Text(
-        '$_counter',
-        style: Theme.of(context).textTheme.headlineMedium,
+      child: Column(
+        children: [
+          Text(
+            '$_counter',
+            style: Theme.of(context).textTheme.headlineMedium,
+          ),
+          ElevatedButton(
+              onPressed: () {
+                Navigator.pushNamed(context, "/login");
+              },
+              child: Text("Goto login"))
+        ],
       ),
     );
   }

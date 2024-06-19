@@ -144,15 +144,19 @@ class _RuiLoginStatusPanelState extends State<RuiLoginStatusPanel> {
                           'https://avatars.githubusercontent.com/u/20411648?s=96&v=4'),
                     ),
                   ),
+                  SizedBox(
+                    width: 20,
+                  ),
                   Expanded(
                       child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
                         'Hi, ${widget.userName}',
                       ),
                       Text(
-                        '${widget.userGender}',
+                        '${widget.userGender ?? ""}',
                       ),
                     ],
                   )),
