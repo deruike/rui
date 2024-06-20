@@ -67,6 +67,10 @@ class _RuiLayoutState extends State<RuiLayoutAdmin> {
     super.initState();
   }
 
+  bool isMobile() {
+    return MediaQuery.of(context).size.width < 600;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -145,7 +149,13 @@ class _RuiLayoutState extends State<RuiLayoutAdmin> {
           Row(
             children: [
               Container(width: LEFT_BAR_CLOSE_BTN_SIZE),
-              Expanded(child: widget.headerMainPanel ?? const Text("")),
+              Expanded(
+                child: Offstage(
+                  offstage: MediaQuery.of(context).size.width < 600,
+                  child: widget.headerMainPanel ?? const Text(""),
+                ),
+                // clipBehavior: Clip.antiAlias,
+              ),
               if (widget.headerToolsPanel != null) widget.headerToolsPanel!,
               if (widget.headerUserPanel != null) widget.headerUserPanel!,
               if (widget.rightMenuButtons != null) _buildMenuAnchor(),
@@ -159,7 +169,9 @@ class _RuiLayoutState extends State<RuiLayoutAdmin> {
 
   Widget _buildLeftToggleButton() {
     return Positioned(
-      left: _isLeftPanelOpen ? LEFT_BAR_WIDTH : LEFT_BAR_CLOSED_WIDTH,
+      left: _isLeftPanelOpen
+          ? LEFT_BAR_WIDTH
+          : (isMobile() ? 0 : LEFT_BAR_CLOSED_WIDTH),
       child: SizedBox(
         width: LEFT_BAR_CLOSE_BTN_SIZE,
         height: LEFT_BAR_CLOSE_BTN_SIZE,
@@ -209,7 +221,9 @@ class _RuiLayoutState extends State<RuiLayoutAdmin> {
 
   Widget _buildLeftPanel() {
     return SizedBox(
-      width: _isLeftPanelOpen ? LEFT_BAR_WIDTH : LEFT_BAR_CLOSED_WIDTH,
+      width: _isLeftPanelOpen
+          ? LEFT_BAR_WIDTH
+          : (isMobile() ? 0 : LEFT_BAR_CLOSED_WIDTH),
       height: MediaQuery.of(context).size.height,
       child: Container(
         color: Theme.of(context).colorScheme.primaryContainer,
@@ -225,7 +239,8 @@ class _RuiLayoutState extends State<RuiLayoutAdmin> {
               child: widget.leftMainPanel ??
                   const Text("please set leftMainPanel"),
             ),
-            if (widget.leftFooterWidget != null)
+            if (widget.leftFooterWidget != null &&
+                (_isLeftPanelOpen || !isMobile()))
               Container(child: widget.leftFooterWidget!),
           ],
         ),
@@ -235,7 +250,9 @@ class _RuiLayoutState extends State<RuiLayoutAdmin> {
 
   Widget _buildLeftLogoPanel() {
     return SizedBox(
-      width: (_isLeftPanelOpen ? LEFT_BAR_WIDTH : LEFT_BAR_CLOSED_WIDTH),
+      width: (_isLeftPanelOpen
+          ? LEFT_BAR_WIDTH
+          : (isMobile() ? 0 : LEFT_BAR_CLOSED_WIDTH)),
       child: widget.leftLogoWidget!,
     );
   }
