@@ -88,7 +88,9 @@ class _MyHomePageState extends State<MyHomePage> {
         headerMainPanel: _buildHeader(),
         headerToolsPanel: const RuiHeadToolsBar(),
         headerUserPanel: _buildHeaderUserPanel(),
-        leftLogoWidget: _buildLeftLogoPanel(),
+        // leftLogoWidget: _buildLeftLogoPanel(),
+        logo: Icons.apple,
+        appName: "RUI",
         leftMainPanel: _buildLeftMainPanel(),
         leftFooterWidget: _buildLeftFooterPanel(),
         body: _buildBody(),
@@ -151,15 +153,6 @@ class _MyHomePageState extends State<MyHomePage> {
     return Container(
       // color: Colors.green,
       child: Text("Footer"),
-    );
-  }
-
-  Widget _buildLeftLogoPanel() {
-    return RuiLogoPanel(
-      isOpen: _isLeftPanelOpen,
-      logoSize: 56,
-      icon: const Icon(Icons.apple),
-      title: 'Listenor',
     );
   }
 

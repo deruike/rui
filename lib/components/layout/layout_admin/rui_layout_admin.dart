@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:rui/components/list/rui_left_nav_bar.dart';
 import 'package:rui/components/panels/head_tools_bar.dart';
+import 'package:rui/components/panels/rui_logo_panel.dart';
 import 'package:rui/components/panels/rui_top_nav_bar.dart';
 import 'package:rui/components/user/rui_login_status_panel.dart';
 import 'package:rui/components/user/mini_login_status_widget.dart';
@@ -13,9 +14,14 @@ class RuiLayoutAdmin extends StatefulWidget {
   final Widget? headerMainPanel;
   final Widget? headerToolsPanel;
   final Widget? headerUserPanel;
-  final Widget? leftLogoWidget;
+
+  final IconData? logo;
+  final String appName;
+  // final Widget? leftLogoWidget;
+
   final Widget? leftMainPanel;
   final Widget? leftFooterWidget;
+
   final Widget? rightPanel;
   final Widget? footerPanel;
   final List<MenuItemButton>? rightMenuButtons;
@@ -29,7 +35,7 @@ class RuiLayoutAdmin extends StatefulWidget {
     this.headerMainPanel,
     this.headerToolsPanel,
     this.headerUserPanel,
-    this.leftLogoWidget,
+    // this.leftLogoWidget,
     this.leftMainPanel,
     this.leftFooterWidget,
     this.rightPanel,
@@ -37,6 +43,8 @@ class RuiLayoutAdmin extends StatefulWidget {
     this.rightMenuButtons,
     this.onLeftBarToggle,
     this.onRightPanelToggle,
+    this.logo,
+    required this.appName,
   });
 
   @override
@@ -51,6 +59,8 @@ class _RuiLayoutState extends State<RuiLayoutAdmin> {
   // static const double TOP_HEADER_HEIGHT = 90;
   static const double TOP_HEADER_HEIGHT = 50;
   static const double BOTTOM_FOOTER_HEIGHT = 48;
+
+  static const double LOGO_SIZE = 56;
 
   static const double LEFT_BAR_WIDTH = 200;
   static const double LEFT_BAR_CLOSED_WIDTH = 56;
@@ -253,7 +263,15 @@ class _RuiLayoutState extends State<RuiLayoutAdmin> {
       width: (_isLeftPanelOpen
           ? LEFT_BAR_WIDTH
           : (isMobile() ? 0 : LEFT_BAR_CLOSED_WIDTH)),
-      child: widget.leftLogoWidget!,
+      child: RuiLogoPanel(
+        isOpen: _isLeftPanelOpen,
+        logoSize: LOGO_SIZE,
+        icon: Icon(
+          widget.logo,
+          size: LOGO_SIZE,
+        ),
+        title: widget.appName,
+      ),
     );
   }
 
