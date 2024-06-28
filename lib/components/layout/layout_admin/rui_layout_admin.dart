@@ -2,12 +2,16 @@ import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
 import 'package:rui/components/list/rui_left_nav_bar.dart';
 import 'package:rui/components/panels/head_tools_bar.dart';
 import 'package:rui/components/panels/rui_logo_panel.dart';
 import 'package:rui/components/panels/rui_top_nav_bar.dart';
-import 'package:rui/components/user/rui_login_status_panel.dart';
+import 'package:rui/components/user/login_form.dart';
 import 'package:rui/components/user/mini_login_status_widget.dart';
+import 'package:rui/components/user/rui_login_status_panel.dart';
+import 'package:rui/pages/about_page.dart';
+import 'package:rui/pages/login_page.dart';
 
 class RuiLayoutAdmin extends StatefulWidget {
   final Widget body;
@@ -29,8 +33,18 @@ class RuiLayoutAdmin extends StatefulWidget {
   final Function(bool)? onLeftBarToggle;
   final Function(bool)? onRightPanelToggle;
 
+  final String initialRoute;
+
+  /// {@macro flutter.widgets.widgetsApp.routes}
+  final Map<String, WidgetBuilder> routes;
+
+  //MaterialPageRoute
+  // final RouteFactory Function(RouteSettings)? onGenerateRoute;
+
   const RuiLayoutAdmin({
     super.key,
+    this.logo,
+    required this.appName,
     required this.body,
     this.headerMainPanel,
     this.headerToolsPanel,
@@ -43,8 +57,9 @@ class RuiLayoutAdmin extends StatefulWidget {
     this.rightMenuButtons,
     this.onLeftBarToggle,
     this.onRightPanelToggle,
-    this.logo,
-    required this.appName,
+    // this.onGenerateRoute,
+    required this.initialRoute,
+    required this.routes,
   });
 
   @override
@@ -83,57 +98,40 @@ class _RuiLayoutState extends State<RuiLayoutAdmin> {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        SizedBox(
-          width: max(500, MediaQuery.of(context).size.width),
-          height: MediaQuery.of(context).size.height,
-          child:
-              //  DefaultTabController(
-              //   length: 3,
-              //   child:
-              Row(
-            children: [
-              _buildLeftPanel(),
-              Expanded(
-                child: Column(
-                  children: [
-                    _buildHeaderPanel(),
-                    Expanded(
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: Container(
-                              height: MediaQuery.of(context).size.height -
-                                  TOP_HEADER_HEIGHT -
-                                  BOTTOM_FOOTER_HEIGHT,
-                              width: MediaQuery.of(context).size.width -
-                                  (_isLeftPanelOpen ? LEFT_BAR_WIDTH : 0),
-                              child: widget.body,
-                              //   TabBarView(
-                              // children: [
-                              //   Icon(Icons.directions_car),
-                              //   Icon(Icons.directions_transit),
-                              //   widget.body,
-                              // ],
-                              // ),
-                            ),
-                          ),
-                          if (widget.rightPanel != null) _buildRightPanel(),
-                        ],
-                      ),
-                    ),
-                    if (widget.footerPanel != null) _buildFooterPanel(),
-                  ],
-                ),
-              ),
-            ],
-            // ),
+    return Scaffold(
+      body: Stack(
+        children: [
+          _buildAppMainFrame(),
+          _buildLeftToggleButton(),
+          if (widget.rightPanel != null) _buildRightToggleButton(),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildAppMainFrame() {
+    return SizedBox(
+      width: max(500, MediaQuery.of(context).size.width),
+      height: MediaQuery.of(context).size.height,
+      child:
+          //  DefaultTabController(
+          //   length: 3,
+          //   child:
+          Row(
+        children: [
+          _buildLeftPanel(),
+          Expanded(
+            child: Column(
+              children: [
+                _buildHeaderPanel(),
+                _buildMainPanel(),
+                if (widget.footerPanel != null) _buildFooterPanel(),
+              ],
+            ),
           ),
-        ),
-        _buildLeftToggleButton(),
-        if (widget.rightPanel != null) _buildRightToggleButton(),
-      ],
+        ],
+        // ),
+      ),
     );
   }
 
@@ -310,6 +308,57 @@ class _RuiLayoutState extends State<RuiLayoutAdmin> {
     );
   }
 
+  Widget _buildMainPanel() {
+    return Expanded(
+      child: Row(
+        children: [
+          Expanded(
+            child: Container(
+              height: MediaQuery.of(context).size.height -
+                  TOP_HEADER_HEIGHT -
+                  BOTTOM_FOOTER_HEIGHT,
+              width: MediaQuery.of(context).size.width -
+                  (_isLeftPanelOpen ? LEFT_BAR_WIDTH : 0),
+              child: _buildBody(), //widget.body,
+              //   TabBarView(
+              // children: [
+              //   Icon(Icons.directions_car),
+              //   Icon(Icons.directions_transit),
+              //   widget.body,
+              // ],
+              // ),
+            ),
+          ),
+          if (widget.rightPanel != null) _buildRightPanel(),
+        ],
+      ),
+    );
+    return Expanded(
+      child: Row(
+        children: [
+          Expanded(
+            child: Container(
+              height: MediaQuery.of(context).size.height -
+                  TOP_HEADER_HEIGHT -
+                  BOTTOM_FOOTER_HEIGHT,
+              width: MediaQuery.of(context).size.width -
+                  (_isLeftPanelOpen ? LEFT_BAR_WIDTH : 0),
+              child: _buildBody(), //widget.body,
+              //   TabBarView(
+              // children: [
+              //   Icon(Icons.directions_car),
+              //   Icon(Icons.directions_transit),
+              //   widget.body,
+              // ],
+              // ),
+            ),
+          ),
+          if (widget.rightPanel != null) _buildRightPanel(),
+        ],
+      ),
+    );
+  }
+
   Widget _buildFooterPanel() {
     return Container(
       height: BOTTOM_FOOTER_HEIGHT,
@@ -320,15 +369,37 @@ class _RuiLayoutState extends State<RuiLayoutAdmin> {
   }
 
   Widget _buildBody() {
-    return Expanded(
-      child: Container(
-        height: MediaQuery.of(context).size.height -
-            TOP_HEADER_HEIGHT -
-            BOTTOM_FOOTER_HEIGHT,
-        width: MediaQuery.of(context).size.width -
-            (_isLeftPanelOpen ? LEFT_BAR_WIDTH : 0),
-        // color: Colors.green,
-        child: widget.body,
+    return Container(
+      height: MediaQuery.of(context).size.height -
+          TOP_HEADER_HEIGHT -
+          BOTTOM_FOOTER_HEIGHT,
+      width: MediaQuery.of(context).size.width -
+          (_isLeftPanelOpen ? LEFT_BAR_WIDTH : 0),
+      // color: Colors.green,
+      child: Navigator(
+        initialRoute: '/',
+        onGenerateRoute: (RouteSettings settings) {
+          WidgetBuilder builder;
+          builder =
+              widget.routes != null && widget.routes![settings.name!] != null
+                  ? builder = widget.routes![settings.name!]!
+                  : builder = (BuildContext _) => AboutPage();
+          // switch (settings.name) {
+          //   case '/':
+          //   case '/home':
+          //     builder = (BuildContext _) => widget.body;
+          //     break;
+          //   case '/login':
+          //     builder = (BuildContext _) => LoginPage();
+          //   case '/about':
+          //     builder = (BuildContext _) => AboutPage();
+
+          //     break;
+          //   default:
+          //     throw Exception('Invalid route: ${settings.name}');
+          // }
+          return MaterialPageRoute(builder: builder, settings: settings);
+        },
       ),
     );
   }

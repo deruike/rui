@@ -10,10 +10,20 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
-    return const Center(
-      child: Text(
-        'LoginPage is working',
-        style: TextStyle(fontSize: 20),
+    return Center(
+      child: Column(
+        children: [
+          ElevatedButton(
+              onPressed: () {
+                Navigator.pushNamed(context, "/home");
+              },
+              child: Text("home")),
+          ElevatedButton(
+              onPressed: () {
+                Navigator.pushNamed(context, "/about");
+              },
+              child: Text("about")),
+        ],
       ),
     );
   }

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:rui/grid/rui_grid_cell.dart';
+import 'package:rui/components/grid/rui_grid_cell.dart';
 
 class RuiGridRow extends StatelessWidget {
   final List<RuiGridCell> children;

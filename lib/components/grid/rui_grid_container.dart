@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:rui/grid/rui_grid_row.dart';
+import 'package:rui/components/grid/rui_grid_row.dart';
 
 class RuiGridContainer extends StatelessWidget {
   RuiGridContainer({

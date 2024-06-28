@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:rui/layout/layout_delphi/delphi_container.dart';
+import 'package:rui/components/layout/layout_delphi/delphi_container.dart';
 
 class DelphiLayout extends DelphiContainer {
   DelphiLayout({
