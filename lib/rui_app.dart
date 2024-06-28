@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:rui/components/layout/layout_admin/rui_layout_admin.dart';
 import 'package:rui/pages/landing_page.dart';
 import 'package:rui/pages/login_page.dart';
+import 'package:rui/provider/session_model.dart';
 import 'package:rui/provider/theme_model.dart';
 import 'package:rui/storage/rui_storage_manager.dart';
 // import 'package:rui/theme/app_theme.dart';
@@ -33,7 +34,8 @@ class RuiApp extends MaterialApp {
   final String appName;
   // final Widget? leftLogoWidget;
 
-  final Widget? leftMainPanel;
+  // final Widget? leftMainPanel;
+  final List<Widget> leftMenuButtons;
   final Widget? leftFooterWidget;
 
   final Widget? rightPanel;
@@ -62,7 +64,8 @@ class RuiApp extends MaterialApp {
     this.headerUserPanel,
     this.logo,
     // this.leftLogoWidget,
-    this.leftMainPanel,
+    // this.leftMainPanel,
+    required this.leftMenuButtons,
     this.leftFooterWidget,
     this.rightPanel,
     this.footerPanel,
@@ -77,6 +80,7 @@ class _RuiAppState extends State<RuiApp> {
   bool isLoading = true;
 
   late final ThemeModel? themeModel;
+  late final SessionModel? sessionModel;
 
   @override
   void initState() {
@@ -84,8 +88,13 @@ class _RuiAppState extends State<RuiApp> {
 
     RuiStorageManager.load().then((ThemeModel _themeModel) {
       themeModel = _themeModel;
-      setState(() {
-        isLoading = false;
+
+      RuiStorageManager.loadSession().then((SessionModel sm) {
+        sessionModel = sm;
+
+        setState(() {
+          isLoading = false;
+        });
       });
     });
   }
@@ -101,6 +110,7 @@ class _RuiAppState extends State<RuiApp> {
               ChangeNotifierProvider(
                   create: (context) => ThemeModel()
                     ..setThemeModel(themeModel ?? ThemeModel())), //此是主题状态注册
+              ChangeNotifierProvider(create: (context) => SessionModel())
             ],
             child: Consumer<ThemeModel>(
               //主题设置1：状态获取方式
@@ -124,8 +134,9 @@ class _RuiAppState extends State<RuiApp> {
                     // leftLogoWidget: _buildLeftLogoPanel(),
                     logo: Icons.apple,
                     appName: "RUI",
-                    leftMainPanel:
-                        widget.leftMainPanel, //_buildLeftMainPanel(),
+                    //leftMainPanel:
+                    // widget.leftMainPanel, //_buildLeftMainPanel(),
+                    leftMenuButtons: widget.leftMenuButtons,
                     leftFooterWidget:
                         widget.leftFooterWidget, //_buildLeftFooterPanel(),
                     body: //widget.body,

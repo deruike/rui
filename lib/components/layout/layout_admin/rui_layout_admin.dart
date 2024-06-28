@@ -12,6 +12,7 @@ import 'package:rui/components/user/mini_login_status_widget.dart';
 import 'package:rui/components/user/rui_login_status_panel.dart';
 import 'package:rui/pages/about_page.dart';
 import 'package:rui/pages/login_page.dart';
+import 'package:rui/pages/not_found/not_found_page.dart';
 
 class RuiLayoutAdmin extends StatefulWidget {
   final Widget body;
@@ -21,9 +22,8 @@ class RuiLayoutAdmin extends StatefulWidget {
 
   final IconData? logo;
   final String appName;
-  // final Widget? leftLogoWidget;
-
-  final Widget? leftMainPanel;
+  // final Widget? leftMainPanel;
+  final List<Widget> leftMenuButtons;
   final Widget? leftFooterWidget;
 
   final Widget? rightPanel;
@@ -49,8 +49,7 @@ class RuiLayoutAdmin extends StatefulWidget {
     this.headerMainPanel,
     this.headerToolsPanel,
     this.headerUserPanel,
-    // this.leftLogoWidget,
-    this.leftMainPanel,
+    // this.leftMainPanel,
     this.leftFooterWidget,
     this.rightPanel,
     this.footerPanel,
@@ -60,6 +59,7 @@ class RuiLayoutAdmin extends StatefulWidget {
     // this.onGenerateRoute,
     required this.initialRoute,
     required this.routes,
+    required this.leftMenuButtons,
   });
 
   @override
@@ -244,8 +244,11 @@ class _RuiLayoutState extends State<RuiLayoutAdmin> {
               height: MediaQuery.of(context).size.height -
                   LEFT_BAR_TOP_LOGO_HEIGHT -
                   LEFT_BAR_FOOTER_HEIGHT,
-              child: widget.leftMainPanel ??
-                  const Text("please set leftMainPanel"),
+              child: RuiLeftNavBar(
+                  isOpen: _isLeftPanelOpen, menuItems: widget.leftMenuButtons),
+
+              //  widget.leftMainPanel ??
+              //     const Text("please set leftMainPanel"),
             ),
             if (widget.leftFooterWidget != null &&
                 (_isLeftPanelOpen || !isMobile()))
@@ -377,27 +380,12 @@ class _RuiLayoutState extends State<RuiLayoutAdmin> {
           (_isLeftPanelOpen ? LEFT_BAR_WIDTH : 0),
       // color: Colors.green,
       child: Navigator(
-        initialRoute: '/',
+        initialRoute: widget.initialRoute,
         onGenerateRoute: (RouteSettings settings) {
           WidgetBuilder builder;
-          builder =
-              widget.routes != null && widget.routes![settings.name!] != null
-                  ? builder = widget.routes![settings.name!]!
-                  : builder = (BuildContext _) => AboutPage();
-          // switch (settings.name) {
-          //   case '/':
-          //   case '/home':
-          //     builder = (BuildContext _) => widget.body;
-          //     break;
-          //   case '/login':
-          //     builder = (BuildContext _) => LoginPage();
-          //   case '/about':
-          //     builder = (BuildContext _) => AboutPage();
-
-          //     break;
-          //   default:
-          //     throw Exception('Invalid route: ${settings.name}');
-          // }
+          builder = widget.routes[settings.name!] != null
+              ? builder = widget.routes[settings.name!]!
+              : builder = (BuildContext _) => NotFoundPage();
           return MaterialPageRoute(builder: builder, settings: settings);
         },
       ),

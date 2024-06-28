@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:rui/provider/session_model.dart';
 import 'package:rui/provider/theme_model.dart';
 import 'package:rui/theme/rui_theme.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -30,6 +31,17 @@ class RuiStorageManager {
     themeModel.setThemeSeedColor(cl);
 
     return themeModel;
+  }
+
+  static Future<SessionModel> loadSession() async {
+    var sp = await getSharedPreferences();
+
+    SessionModel sessionModel = SessionModel();
+
+    sessionModel.setToken(sp.getString("token") ?? "");
+    sessionModel.setUserId(sp.getString("userId") ?? "");
+
+    return sessionModel;
   }
 
   static Future<bool> save() async {

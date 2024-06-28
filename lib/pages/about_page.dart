@@ -13,6 +13,7 @@ class _LoginPageState extends State<AboutPage> {
     return Center(
       child: Column(
         children: [
+          Text("About APP"),
           ElevatedButton(
               onPressed: () {
                 Navigator.pushNamed(context, "/home");

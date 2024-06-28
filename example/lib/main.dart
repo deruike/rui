@@ -6,6 +6,7 @@ import 'package:rui/components/list/rui_left_nav_bar.dart';
 import 'package:rui/components/panels/head_tools_bar.dart';
 import 'package:rui/components/panels/rui_logo_panel.dart';
 import 'package:rui/components/user/rui_login_status_panel.dart';
+import 'package:rui/pages/about_page.dart';
 import 'package:rui/pages/login_page.dart';
 import 'package:rui/provider/theme_model.dart';
 import 'package:rui/rui_route.dart';
@@ -24,21 +25,20 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
-  bool _isLeftPanelOpen = true;
-
   @override
   Widget build(BuildContext context) {
     return RuiApp(
       title: "RUI APP",
       // themeModel: themeModel,
       // 定义初始路由
-      initialRoute: '/',
+      initialRoute: '/home',
       routes: {
         // 定义路由映射
         '/home': (context) => MyHomePage(
               title: 'Flutter Demo Home Page',
             ),
         '/login': (context) => LoginPage(),
+        '/about': (context) => AboutPage(),
       },
       headerMainPanel: _buildHeader(context),
       headerToolsPanel: const RuiHeadToolsBar(),
@@ -46,7 +46,8 @@ class MyApp extends StatelessWidget {
       // leftLogoWidget: _buildLeftLogoPanel(),
       logo: Icons.apple,
       appName: "RUI",
-      leftMainPanel: _buildLeftMainPanel(context),
+      // leftMainPanel: _buildLeftMainPanel(context),
+      leftMenuButtons: genLeftMenuItems(context),
       leftFooterWidget: _buildLeftFooterPanel(context),
       // body: _buildBody(context),
       footerPanel: _buildFooter(context),
@@ -96,21 +97,17 @@ class MyApp extends StatelessWidget {
     );
   }
 
-  Widget _buildLeftMainPanel(BuildContext context) {
-    // return Text("data");
-    return RuiLeftNavBar(
-        isOpen: _isLeftPanelOpen, menuItems: genLeftMenuItems(context));
-  }
+  // Widget _buildLeftMainPanel(BuildContext context) {
+  //   // return Text("data");
+  //   return RuiLeftNavBar(
+  //       isOpen: _isLeftPanelOpen, menuItems: genLeftMenuItems(context));
+  // }
 
   Widget _buildLeftFooterPanel(BuildContext context) {
-    return _isLeftPanelOpen ? Text("Footer") : Icon(Icons.abc);
+    return Icon(Icons.abc);
   }
 
-  void onLeftBarToggle(bool isOpen) {
-    // setState(() {
-    //   _isLeftPanelOpen = isOpen;
-    // });
-  }
+  void onLeftBarToggle(bool isOpen) {}
 
   List<Widget> genLeftMenuItems(BuildContext context) {
     return [
@@ -191,9 +188,6 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatefulWidget {
-  TextStyle textStyle =
-      const TextStyle(color: Color(0xFF333333), fontSize: 100.0);
-
   MyHomePage({super.key, required this.title});
 
   // This widget is the home page of your application. It is stateful, meaning
@@ -226,25 +220,23 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     return Scaffold(
-      // appBar: PreferredSize(
-      //   preferredSize: Size.fromHeight(20), // 自定义 AppBar 高度
-      //   child: AppBar(
-      //     // TRY THIS: Try changing the color here to a specific color (to
-      //     // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
-      //     // change color while the other colors stay the same.
-      //     backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-      //     // Here we take the value from the MyHomePage object that was created by
-      //     // the App.build method, and use it to set our appbar title.
-      //     title: Text(widget.title),
-      //   ),
-      // ),
+      appBar: AppBar(
+        title: Text(widget.title),
+        leading: Icon(Icons.home),
+        actions: [
+          MenuAnchor(
+              menuChildren: [
+                MenuItemButton(child: Text("test"), onPressed: () {}),
+                MenuItemButton(child: Text("test"), onPressed: () {}),
+                MenuItemButton(child: Text("test"), onPressed: () {})
+              ],
+              child: IconButton(
+                icon: Icon(Icons.menu),
+                onPressed: () {},
+              ))
+        ],
+      ),
       body: Column(
         children: [
           Text(
