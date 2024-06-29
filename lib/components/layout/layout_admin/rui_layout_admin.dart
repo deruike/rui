@@ -15,7 +15,7 @@ import 'package:rui/pages/login_page.dart';
 import 'package:rui/pages/not_found/not_found_page.dart';
 
 class RuiLayoutAdmin extends StatefulWidget {
-  final Widget body;
+  // final Widget body;
   final Widget? headerMainPanel;
   final Widget? headerToolsPanel;
   final Widget? headerUserPanel;
@@ -45,7 +45,7 @@ class RuiLayoutAdmin extends StatefulWidget {
     super.key,
     this.logo,
     required this.appName,
-    required this.body,
+    // required this.body,
     this.headerMainPanel,
     this.headerToolsPanel,
     this.headerUserPanel,

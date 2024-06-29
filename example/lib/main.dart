@@ -13,6 +13,8 @@ import 'package:rui/rui_route.dart';
 import 'package:rui/storage/rui_storage_manager.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import "package:rui/pages/contact_page.dart";
+
 // import 'package:rui/index.dart';
 
 import 'package:rui/rui_app.dart';
@@ -39,6 +41,7 @@ class MyApp extends StatelessWidget {
             ),
         '/login': (context) => LoginPage(),
         '/about': (context) => AboutPage(),
+        '/contact': (context) => ContactPage(),
       },
       headerMainPanel: _buildHeader(context),
       headerToolsPanel: const RuiHeadToolsBar(),
@@ -115,8 +118,14 @@ class MyApp extends StatelessWidget {
         child: const Text("Home"),
         leadingIcon: Icon(Icons.home),
         onPressed: () {
-          print("Home");
-          print(MediaQuery.of(context).size.height);
+          Navigator.pushNamed(context, '/home');
+        },
+      ),
+      MenuItemButton(
+        leadingIcon: Icon(Icons.settings),
+        child: Text("Settings"),
+        onPressed: () {
+          Navigator.pushNamed(context, '/about');
         },
       ),
       SubmenuButton(
@@ -127,22 +136,17 @@ class MyApp extends StatelessWidget {
             child: const Text("About Us"),
             leadingIcon: Icon(Icons.person),
             onPressed: () {
-              print("About Us");
+              Navigator.pushNamed(context, '/about');
             },
           ),
           MenuItemButton(
             child: const Text("Contact Us"),
             leadingIcon: Icon(Icons.email),
             onPressed: () {
-              print("Contact Us");
+              Navigator.pushNamed(context, '/contact');
             },
           ),
         ],
-      ),
-      const SubmenuButton(
-        leadingIcon: Icon(Icons.settings),
-        menuChildren: [],
-        child: Text("Settings"),
       ),
       MenuItemButton(
         leadingIcon: const Icon(Icons.logout),
@@ -221,22 +225,22 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-        leading: Icon(Icons.home),
-        actions: [
-          MenuAnchor(
-              menuChildren: [
-                MenuItemButton(child: Text("test"), onPressed: () {}),
-                MenuItemButton(child: Text("test"), onPressed: () {}),
-                MenuItemButton(child: Text("test"), onPressed: () {})
-              ],
-              child: IconButton(
-                icon: Icon(Icons.menu),
-                onPressed: () {},
-              ))
-        ],
-      ),
+      // appBar: AppBar(
+      //   title: Text(widget.title),
+      //   leading: Icon(Icons.home),
+      //   actions: [
+      //     MenuAnchor(
+      //         menuChildren: [
+      //           MenuItemButton(child: Text("test"), onPressed: () {}),
+      //           MenuItemButton(child: Text("test"), onPressed: () {}),
+      //           MenuItemButton(child: Text("test"), onPressed: () {})
+      //         ],
+      //         child: IconButton(
+      //           icon: Icon(Icons.menu),
+      //           onPressed: () {},
+      //         ))
+      //   ],
+      // ),
       body: Column(
         children: [
           Text(
